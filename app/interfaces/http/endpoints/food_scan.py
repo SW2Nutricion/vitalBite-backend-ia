@@ -1,4 +1,4 @@
-"""Endpoint CU9 — POST /api/v1/food-scan (OCR + Deep Learning).
+﻿"""Endpoint CU9 — POST /api/v1/food-scan (OCR + Deep Learning).
 
 Recibe la imagen como ``multipart/form-data``. Valida tamaño/formato, ejecuta el
 pipeline del analizador y aplica el umbral de confianza para sugerir retoma de
@@ -10,11 +10,11 @@ import io
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from PIL import Image
 
+from app.application.use_cases.food_scan import analyze_and_evaluate
 from app.core.config import settings
 from app.core.security import verify_api_key
-from app.schemas.common import ScanMode
-from app.schemas.food_scan import FoodScanResponse
-from app.services.nutrition_analyzer_service import analyze_and_evaluate
+from app.interfaces.http.schemas.common import ScanMode
+from app.interfaces.http.schemas.food_scan import FoodScanResponse
 
 router = APIRouter()
 

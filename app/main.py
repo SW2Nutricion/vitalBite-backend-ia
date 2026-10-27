@@ -3,9 +3,9 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.v1.router import api_router
+from app.interfaces.http.router import api_router
 from app.core.config import settings
-from app.core.exceptions import (
+from app.interfaces.http.exception_handlers import (
     CoreServiceError,
     InsufficientDataError,
     InsufficientPatientsError,
@@ -30,7 +30,7 @@ async def lifespan(app: FastAPI):
     )
     # Precarga de la CNN (no bloquea el arranque si TF/artefacto no están)
     try:
-        from app.services.food_classification_service import preload_cnn_model
+        from app.infrastructure.ml.food_classifier import preload_cnn_model
 
         preload_cnn_model()
     except Exception as exc:  # defensivo: nunca abortar el arranque por la CNN

@@ -96,9 +96,17 @@ Ver `docs/resumen_implementacion.md` para el detalle completo.
 
 ```
 app/
-├── api/v1/          # Rutas y endpoints versionados
-├── core/            # config, security (API Key), logging JSON, exceptions
-├── models/          # artifacts/ (modelos serializados) + training/ (scripts)
-├── schemas/         # Esquemas Pydantic (request/response)
-└── services/        # Lógica de inferencia (RF, K-means, OCR, CNN, analizador)
+├── domain/          # Excepciones y reglas sin dependencias de frameworks
+├── application/     # Casos de uso y puertos requeridos
+├── infrastructure/  # Adaptadores ML, OCR y persistencia de artefactos
+├── interfaces/http/ # Endpoints, router y contratos Pydantic
+├── core/            # Configuración, seguridad y logging transversal
+└── models/          # Artefactos serializados y scripts de entrenamiento
 ```
+
+Las dependencias siguen la dirección `interfaces -> application -> domain`.
+La infraestructura implementa los puertos definidos por `application`; por
+ejemplo, `CachedRiskModelProvider` adapta el cargador del Random Forest al
+caso de uso de predicción. Los paquetes `app.services`, `app.schemas` y
+`app.api.v1` se conservan únicamente como fachadas de compatibilidad para
+consumidores existentes y no contienen la implementación.

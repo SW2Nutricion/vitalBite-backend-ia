@@ -1,4 +1,4 @@
-"""Health check extendido — GET /api/v1/health.
+﻿"""Health check extendido — GET /api/v1/health.
 
 Reporta el estado del servicio y la disponibilidad de cada artefacto de modelo
 (Random Forest, scaler, CNN) sin cargar las librerías pesadas. Útil para los
@@ -8,7 +8,7 @@ health checks de orquestadores en la nube.
 from fastapi import APIRouter
 
 from app.core.config import settings
-from app.services.model_loader import models_status
+from app.infrastructure.ml.model_loader import models_status
 
 router = APIRouter()
 

@@ -1,4 +1,4 @@
-"""Endpoint CU11 — POST /api/v1/segmentation (K-means).
+﻿"""Endpoint CU11 — POST /api/v1/segmentation (K-means).
 
 Controlador delgado: el error de dominio ``InsufficientPatientsError`` se mapea
 a 422 mediante el handler global registrado en ``main.py``.
@@ -6,15 +6,19 @@ a 422 mediante el handler global registrado en ``main.py``.
 
 from fastapi import APIRouter, Depends
 
+from app.application.use_cases.segmentation import SegmentationService
+from app.core.config import settings
 from app.core.security import verify_api_key
-from app.schemas.segmentation import SegmentationRequest, SegmentationResponse
-from app.services.segmentation_service import SegmentationService
+from app.interfaces.http.schemas.segmentation import (
+    SegmentationRequest,
+    SegmentationResponse,
+)
 
 router = APIRouter()
 
 
 def get_service() -> SegmentationService:
-    return SegmentationService()
+    return SegmentationService(settings.MIN_PATIENTS_FOR_KMEANS)
 
 
 @router.post(
